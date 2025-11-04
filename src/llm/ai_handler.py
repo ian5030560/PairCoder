@@ -2,7 +2,7 @@ import logging
 import os
 
 import litellm
-import openai
+import g4f
 from aiolimiter import AsyncLimiter
 from litellm import acompletion
 from litellm import embedding
@@ -33,6 +33,7 @@ class AiHandler:
         try:
             if "gpt" in get_settings().get("config.model").lower() or \
                 "text" in get_settings().get("config.embedding_model").lower():
+                # set OpenAI key in g4f
                 openai.api_key = get_settings().openai.key
                 litellm.openai_key = get_settings().openai.key
         except AttributeError as e:

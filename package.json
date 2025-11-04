@@ -6,7 +6,9 @@
   "scripts": {
     "start:embed": "python src/text_embedding/server.py",
     "start": "python src/solve_dataset.py --dataset_name mbpp --split_name test --dir_path results",
-    "start:g4f": "python -m g4f.cli gui --port 8080 --debug"
+    "start:g4f": "python -m g4f.cli gui --port 8080 --debug",
+    "install": "pip install -r requirements.txt",
+    "freeze": "pip freeze > requirements.txt"
   },
   "keywords": [],
   "author": "",

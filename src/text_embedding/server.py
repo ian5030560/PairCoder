@@ -1,17 +1,23 @@
-from fastapi import FastAPI
+from typing import Union
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 
 app = FastAPI()
-model = SentenceTransformer("all-MiniLM-L6-v2")
+models = {
+    "intfloat/multilingual-e5-base": SentenceTransformer("intfloat/multilingual-e5-base"),
+}
 
 class EmbeddingRequest(BaseModel):
     model: str
-    input: list[str]
+    input: Union[str, list[str]]
 
 @app.post("/custom/embeddings")
 def create_embeddings(req: EmbeddingRequest):
-    vectors = model.encode(req.input)
+    if req.model not in models.keys():
+        return HTTPException(status_code=400, detail="Model not supported.")
+
+    vectors = models[req.model].encode(req.input, normalize_embeddings=True)
     data = [
             {"embedding": vec.tolist(), "index": i, "object": "embedding"}
             for i, vec in enumerate(vectors)
@@ -20,9 +26,9 @@ def create_embeddings(req: EmbeddingRequest):
     return {
         "data": data,
         "model": req.model,
-        "object": type(data)
+        "object": "list"
     }
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run("src.text_embedding.server:app", host="0.0.0.0", port=8001, reload_dirs=["src/text_embedding"])
