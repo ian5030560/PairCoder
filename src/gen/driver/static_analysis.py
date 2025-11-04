@@ -50,12 +50,17 @@ def analyze_code_from_string(python_code):
     success = False
     error_str = ''
     try:
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, encoding='utf-8') as temp_file:
+        with tempfile.NamedTemporaryFile(mode='w', delete=True, encoding='utf-8') as temp_file:
             temp_file.write(python_code)
             temp_file_path = temp_file.name
         pylint_results = check_code_pylint(temp_file_path)
         mypy_results = check_code_mypy(temp_file_path)
-        os.remove(temp_file_path)
+        
+        try:
+            os.remove(temp_file_path)
+        except OSError:
+            os.rmdir(temp_file_path)
+            
         if not pylint_results and mypy_results[2] == 0:
             success = True
         else:

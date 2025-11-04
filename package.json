@@ -1,0 +1,14 @@
+{
+  "name": "paircoder",
+  "version": "1.0.0",
+  "description": "**This paper has been accepted by ASE 2024 and awarded the 🏆 ACM SIGSOFT Distinguished Paper Award.**\r <p align=\"center\">\r     <a href=\"https://arxiv.org/abs/2409.05001\"><img src=\"https://img.shields.io/badge/arXiv-2409.05001-b31b1b.svg\"></a>\r     <a href=\"https://conf.researchr.org/home/ase-2024\"><img src=\"https://img.shields.io/badge/ASE-2024-blue.svg\"></a>\r     <a href=\"https://conf.researchr.org/info/ase-2024/awards\"><img src=\"https://img.shields.io/badge/-ACM%20SIGSOFT%20Distinguished%20Paper%20%F0%9F%8F%86-brightgreen\"></a>\r </p>",
+  "main": "index.js",
+  "scripts": {
+    "start:embed": "python src/text_embedding/server.py",
+    "start": "python src/solve_dataset.py --dataset_name mbpp --split_name test --dir_path results",
+    "start:g4f": "python -m g4f.cli gui --port 8080 --debug"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
