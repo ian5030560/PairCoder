@@ -31,11 +31,14 @@ if __name__ == "__main__":
         dir_path = f"{args.method}-{timestamp}"
         print(f"auto dir id: {args.dir_path}")
     
-    solve_dataset(dataset_name=args.dataset_name,
-                  split_name=args.split_name,
-                  solution_file_name=args.solution_file_name,
-                  id_range=args.id_range,
-                  id_list=id_list,
-                  dir_path=dir_path,
-                  method=args.method
-                  )
+    import asyncio
+    asyncio.run(    
+        solve_dataset(dataset_name=args.dataset_name,
+            split_name=args.split_name,
+            solution_file_name=args.solution_file_name,
+            id_range=args.id_range,
+            id_list=id_list,
+            dir_path=dir_path,
+            method=args.method
+        )
+    )

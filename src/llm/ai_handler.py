@@ -2,7 +2,6 @@ import logging
 import os
 
 import litellm
-import g4f
 from aiolimiter import AsyncLimiter
 from litellm import acompletion
 from litellm import embedding
@@ -33,9 +32,8 @@ class AiHandler:
         try:
             if "gpt" in get_settings().get("config.model").lower() or \
                 "text" in get_settings().get("config.embedding_model").lower():
-                # set OpenAI key in g4f
-                openai.api_key = get_settings().openai.key
-                litellm.openai_key = get_settings().openai.key
+                litellm.api_key = get_settings().openai.key
+    
         except AttributeError as e:
             raise ValueError("OpenAI key is required") from e
 
@@ -78,6 +76,7 @@ class AiHandler:
                     n = n, 
                     top_p=top_p,
                     force_timeout=get_settings().config.ai_timeout,
+                    api_base=get_settings().openai.chat_url
                 )
         except (APIError) as e:
             logging.error("Error during OpenAI inference")
@@ -112,6 +111,7 @@ class AiHandler:
             embeddings = embedding(
                 model = model, 
                 input = texts,
+                api_base=get_settings().openai.embed_url
             )
         except (APIError) as e:
             logging.error("Error during OpenAI inference")

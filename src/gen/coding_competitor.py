@@ -52,13 +52,13 @@ class CodeContestsCompetitor:
             logging.error(f"Error: {e}")
             return ""
         
-    def solve_problem_in_dataset(self, example, iteration=0):
+    async def solve_problem_in_dataset(self, example, iteration=0):
         problem = {k: example.get(k) for k in ["io_format", "name", "description", "public_tests"]}
-        prediction = asyncio.run(self.run(problem=problem, iteration=iteration))
+        prediction = await self.run(problem=problem, iteration=iteration)
         return prediction
 
 
-def solve_problem(dataset_name,
+async def solve_problem(dataset_name,
                   split_name="valid",
                   problem_name="",
                   problem_number=0):
@@ -91,17 +91,17 @@ def solve_problem(dataset_name,
             problem['public_tests']['input'] = [problem['private_tests']['input'][0]]
             problem['public_tests']['output'] = [problem['private_tests']['output'][0]]
 
-    return solve_and_evaluate(problem)
+    return await solve_and_evaluate(problem)
 
 
-def solve_and_evaluate(problem):
+async def solve_and_evaluate(problem):
 
     base_path = os.getcwd()
     logger = get_logger(__name__)
 
     solver = CodeContestsCompetitor()
     os.chdir(base_path)
-    solution_code = solver.solve_problem_in_dataset(problem)
+    solution_code = await solver.solve_problem_in_dataset(problem)
     logger.info(f"evaluating solution on public tests...")
     test_results, test_passed_public, test_failed_public, test_timeout_public = evaluate_solution_on_subset('public_tests',
                                                                                                        problem,

@@ -10,6 +10,7 @@ logger = get_logger(__name__)
 async def analyze_code_errors(self, problem, prompt_type):
     counter_retry = 0
     prompt = choose_prompt(prompt_type)
+    
     while True:
         try:
             logger.info(f"--[NAVIGATOR] analyze {prompt_type} failure--")

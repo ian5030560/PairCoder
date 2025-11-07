@@ -9,7 +9,7 @@ from log import setup_logger
 from settings.config_loader import get_settings
 import toml
 
-def solve_dataset(dataset_name='codecontest',
+async def solve_dataset(dataset_name='codecontest',
                   split_name='valid',
                   solution_file_name='solutions.json',
                   id_range=None,
@@ -95,7 +95,7 @@ def solve_dataset(dataset_name='codecontest',
                     logger.info(f"There is no public tests in {problem['name']}, use the first private test!")
                     problem['public_tests']['input'] = [problem['private_tests']['input'][0]]
                     problem['public_tests']['output'] = [problem['private_tests']['output'][0]]
-            solution = solver.solve_problem_in_dataset(problem, iteration)
+            solution = await solver.solve_problem_in_dataset(problem, iteration)
             logger.info(f"solution code:\n{solution}")
             if not solution:
                 logger.info(f"Failed to solve problem {problem_number} in iteration {iteration}")

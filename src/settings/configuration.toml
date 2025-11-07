@@ -1,9 +1,11 @@
 [openai]
-key = "YOUR_KEY"
+key = ""
+chat_url = "http://localhost:8000/v1"
+embed_url= "http://localhost:8001/v1"
 
 [config]
 model = "gpt-4"
-embedding_model = "text-embedding-3-large"
+embedding_model = "intfloat/multilingual-e5-base"
 frequency_penalty=0.1
 ai_timeout=90
 fallback_models =[]
